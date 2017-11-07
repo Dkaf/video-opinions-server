@@ -7,3 +7,7 @@ const reviewSchema = new Schema({
     date: String,
     type: String
 });
+
+const Review = mongoose.model('Review', reviewSchema);
+
+export default Review;
