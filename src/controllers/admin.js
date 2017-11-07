@@ -1,6 +1,6 @@
 import app from './../app';
 import Review from './../models/review';
-import User from './../models/user';
+// import User from './../models/user';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
 
