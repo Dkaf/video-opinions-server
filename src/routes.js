@@ -1,11 +1,11 @@
-import express, { Router } from 'express';
+import express from 'express';
 
 import adminController from './controllers/admin';
 import authController from './controllers/auth';
 
-const router = Router
+const router = express();
 
-router.get('/login', adminController.logIn);
+router.post('/login', adminController.logIn);
 
 router.post('/review', authController.verifyToken, adminController.addReview);
 
