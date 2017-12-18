@@ -1,6 +1,6 @@
 import app from './../app';
 import Review from './../models/review';
-// import User from './../models/user';
+import User from './../models/user';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
 
@@ -9,16 +9,25 @@ const adminController = {};
 //POST Login
 adminController.logIn = (req, res) => {
     const  { password } = req.body;
-    User.findOne({'name': 'admin'})
+    console.log("login attempt made");
+    User.findOne({name: 'admin'})
     .then( user => {
-        let payload = {
-            id: user._id
-        };
-        if (password == user.password) {
+        if (bcrypt.compareSync(password, user.password)) {
+            console.log("passwords match");
+            const payload = {
+                name: user.name
+            };
             let token = jwt.sign(payload, app.get('secret'), {expiresIn: '2h'});
             res.status(201).json({
                 success: true,
                 token: token
+            });
+        }
+        else {
+            console.log("passwords don't match");
+            res.status(404).json({
+                success: false,
+                message: "password does not match"
             });
         }
     })
@@ -41,7 +50,19 @@ adminController.addReview = (req, res) => {
         type
     })
 
-    newReview.save();
+    newReview.save()
+    .then( review => {
+        res.status(200).json({
+            success: true,
+            review
+        })
+    })
+    .catch( err => {
+        res.status(500).json({
+            success: false,
+            err
+        })
+    })
 
 }
 
