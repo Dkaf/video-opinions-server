@@ -13,8 +13,6 @@ authController.verifyToken = (req, res, next) => {
 			if(err) {
 				res.json({success: false, message: 'Failed to verify token'});
 				throw err;
-			} else if(!decoded.id || !decoded.username) {
-				return res.json({success: false, message: 'No Payload in token'});
 			}
 			else {
 				req.decoded = decoded;
