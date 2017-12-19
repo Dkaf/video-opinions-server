@@ -10,7 +10,7 @@ const adminController = {};
 adminController.logIn = (req, res) => {
     const  { password } = req.body;
     console.log("login attempt made");
-    User.findOne({name: 'admin'})
+    User.findOne({'name': 'admin'})
     .then( user => {
         if (bcrypt.compareSync(password, user.password)) {
             console.log("passwords match");
@@ -41,12 +41,13 @@ adminController.logIn = (req, res) => {
 
 //POST Add Review
 adminController.addReview = (req, res) => {
-    const { title, thumbnail, review, type } = req.body;
+    const { title, thumbnail, reviewText, type } = req.body;
+    let today = new Date();
     let newReview = new Review({
         title,
         thumbnail,
-        review,
-        date: new Date(),
+        reviewText,
+        date: today.toLocaleDateString(),
         type
     })
 
@@ -81,6 +82,18 @@ adminController.removeReview = (req, res) => {
         res.status(500).json({
             success: false,
             err: err
+        })
+    })
+}
+
+adminController.changePassword = (req, res) => {
+    const { password } = req.body;
+    const hash = bcrypt.hashSync(password)
+    User.findOneAndUpdate({'name': 'admin'}, {'password': hash})
+    .then( data => {
+        res.status(200).json({
+            success: true,
+            message: 'password changed'
         })
     })
 }
