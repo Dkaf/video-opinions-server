@@ -46,8 +46,8 @@ describe('adminController', () => {
       let review = {
         title: "Test Review",
         thumbnail: "some.url",
-        review: "review content",
-        type: "Movie"
+        reviewText: "review content",
+        type: "movie"
       };
 
       const payload = {
